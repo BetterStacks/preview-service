@@ -85,7 +85,7 @@ async def preview_endpoint(request):
     
     if file is None and file_url is None:
         return error_response('"file" or "file_url" is required', status.HTTP_400_BAD_REQUEST)
-    a = urlparse(url)
+    a = urlparse(file_url)
     filename = os.path.basename(a.path)
 
     try:
