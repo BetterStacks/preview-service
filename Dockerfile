@@ -6,6 +6,8 @@ RUN apt-get update && \
   libreoffice inkscape ffmpeg xvfb \
   libnotify4 libappindicator3-1 curl \
   scribus inkscape \
+  # Install additional codec libraries for ffmpeg
+  libavcodec-extra \
   && rm -rf /var/lib/apt/lists/*
 
 ENV DRAWIO_VERSION="12.6.5"
@@ -20,7 +22,7 @@ COPY Pipfile* /app/
 RUN pipenv install --system
 
 COPY docker-entrypoint.sh /app/
-COPY app.py /app/
+COPY app.py utils.py /app/
 
 RUN groupadd -r previewservice && useradd -r -s /bin/false -g previewservice previewservice
 RUN chown -R previewservice:previewservice /app

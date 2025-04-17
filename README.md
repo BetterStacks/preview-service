@@ -11,16 +11,36 @@ See the [full list of supported file formats](https://github.com/algoo/preview-g
 
 ## Usage
 
-Boot up the service:
+### Using Docker Hub Image
+
+Boot up the service using the pre-built Docker image:
 
 ```bash
 docker run -p 8000:8000 fpurchess/preview-service
 ```
 
-Use it to create a thumbnail:
+### Local Development with Docker Compose
+
+For local development or building from source:
 
 ```bash
+# Build and start the service
+docker-compose up --build
+
+# Run in detached mode
+docker-compose up -d
+```
+
+### Creating Thumbnails
+
+Use the service to create a thumbnail:
+
+```bash
+# Using a local file
 curl -o thumbnail.jpeg -F 'file=file_to_preview.pdf' http://localhost:8000/preview/100x100
+
+# Using a URL (signed S3 URL, etc.)
+curl -o thumbnail.jpeg -F 'file_url=https://example.com/file_to_preview.pdf' http://localhost:8000/preview/100x100
 ```
 
 ## Optional Volumes
@@ -54,9 +74,19 @@ curl -o thumbnail.jpeg -F 'file=file_to_preview.pdf' http://localhost:8000/previ
 
 # Using a URL
 curl -o thumbnail.jpeg -F 'file_url=https://example.com/file_to_preview.pdf' http://localhost:8000/preview/100x100
+
+# For video files
+curl -o thumbnail.jpeg -F 'file=video.mp4' http://localhost:8000/preview/320x180
 ```
 
-Creates a 100x100 JPEG thumbnail image of the provided file and stores it in `thumbnail.jpeg`.
+Creates a JPEG thumbnail image of the provided file with the specified dimensions and stores it in the output file.
+
+#### Supported File Types
+
+- **Documents**: PDF, DOC, DOCX, ODT, TXT, RTF, PPT, PPTX
+- **Images**: JPG, JPEG, PNG, GIF, BMP, SVG, TIFF, WEBP
+- **Videos**: MP4, FLV, WEBM, OGV, WMV, MOV, AVI, M4V, MPG, MPEG
+- **Others**: See [full list of supported formats](https://github.com/algoo/preview-generator#supported-file-formats)
 
 ### GET `/cache/<cached-file>`
 
