@@ -10,6 +10,7 @@ preview-generator = {version = "==0.29", extras = ["all"]}
 python-multipart = "==0.0.6"
 aiofiles = "==23.2.1"
 httpx = ">=0.24.1"
+urllib3 = "==1.26.2"
 
 [dev-packages]
 black = "*"

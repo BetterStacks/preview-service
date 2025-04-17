@@ -1,7 +1,7 @@
 import os
 import hashlib
 import uuid
-
+from urllib.parse import urlparse
 import uvicorn
 import httpx
 
@@ -85,14 +85,16 @@ async def preview_endpoint(request):
     
     if file is None and file_url is None:
         return error_response('"file" or "file_url" is required', status.HTTP_400_BAD_REQUEST)
-    
+    a = urlparse(url)
+    filename = os.path.basename(a.path)
+
     try:
-        # if file is not None:
-        #     if not isinstance(file, UploadFile):
-        #         return error_response('"file" must be a file', status.HTTP_400_BAD_REQUEST)
-        #     file_path = await _store_uploaded_file(file)
-        # else:
-        #     file_path = await _download_file_from_url(file_url)
+        if file is not None:
+            if not isinstance(file, UploadFile):
+                return error_response('"file" must be a file', status.HTTP_400_BAD_REQUEST)
+            file_path = await _store_uploaded_file(file)
+        else:
+            file_path = await _download_file_from_url(file_url, filename)
             
         image = manager.get_jpeg_preview(file_url, width=width, height=height)
     except httpx.HTTPError as e:
