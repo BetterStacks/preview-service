@@ -87,14 +87,14 @@ async def preview_endpoint(request):
         return error_response('"file" or "file_url" is required', status.HTTP_400_BAD_REQUEST)
     
     try:
-        if file is not None:
-            if not isinstance(file, UploadFile):
-                return error_response('"file" must be a file', status.HTTP_400_BAD_REQUEST)
-            file_path = await _store_uploaded_file(file)
-        else:
-            file_path = await _download_file_from_url(file_url)
+        # if file is not None:
+        #     if not isinstance(file, UploadFile):
+        #         return error_response('"file" must be a file', status.HTTP_400_BAD_REQUEST)
+        #     file_path = await _store_uploaded_file(file)
+        # else:
+        #     file_path = await _download_file_from_url(file_url)
             
-        image = manager.get_jpeg_preview(file_path, width=width, height=height)
+        image = manager.get_jpeg_preview(file_url, width=width, height=height)
     except httpx.HTTPError as e:
         return error_response(f"Error downloading file: {str(e)}", status.HTTP_400_BAD_REQUEST)
     except Exception as e:
