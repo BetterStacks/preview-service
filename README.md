@@ -42,14 +42,21 @@ Returns 200 OK when the service is up and running.
 
 ### POST `/preview/{width}x{height}`
 
-Awaits a the file to be converted in a `multipart/form-data` with form name `file`.
+Accepts one of the following in a `multipart/form-data`:
+- A file to be converted with form name `file`
+- A URL pointing to a file with form name `file_url` (e.g., a signed S3 URL)
+
 Returns the converted file as a file response if the conversion is successful.
 
 ```bash
+# Using a local file
 curl -o thumbnail.jpeg -F 'file=file_to_preview.pdf' http://localhost:8000/preview/100x100
+
+# Using a URL
+curl -o thumbnail.jpeg -F 'file_url=https://example.com/file_to_preview.pdf' http://localhost:8000/preview/100x100
 ```
 
-Creates a 100x100 JPEG thumbnail image of `file_to_preview.pdf` and stores it in `thumbnail.jpeg`.
+Creates a 100x100 JPEG thumbnail image of the provided file and stores it in `thumbnail.jpeg`.
 
 ### GET `/cache/<cached-file>`
 
