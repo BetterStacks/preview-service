@@ -22,7 +22,7 @@ COPY Pipfile* /app/
 RUN pipenv install --system
 
 COPY docker-entrypoint.sh /app/
-COPY app.py utils.py /app/
+COPY app.py /app/
 
 RUN groupadd -r previewservice && useradd -r -s /bin/false -g previewservice previewservice
 RUN chown -R previewservice:previewservice /app
